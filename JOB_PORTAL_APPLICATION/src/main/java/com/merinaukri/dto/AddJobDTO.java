@@ -1,18 +1,15 @@
-package com.merinaukri.entity;
+package com.merinaukri.dto;
 
-import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class Job {
-	private int id;
+@AllArgsConstructor
+public class AddJobDTO {
 	private String title;
 	private String description;
 	private String minSalary;

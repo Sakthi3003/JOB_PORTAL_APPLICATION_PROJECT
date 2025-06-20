@@ -1,6 +1,6 @@
 package com.merinaukri.dto;
 
-import com.merinaukri.entity.Job;
+import com.merinaukri.job.Job;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,22 +9,23 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class JobDTO {
-	private int id;
+@AllArgsConstructor
+public class DisplayJobDTO {
+	private Long id;
 	private String title;
 	private String description;
 	private String minSalary;
 	private String maxSalary;
 	private String location;
-	
-	public JobDTO(Job job) {
+
+	public DisplayJobDTO(Job job) {
 		this.id = job.getId();
 		this.title = job.getTitle();
 		this.description = job.getDescription();
-		this.maxSalary = job.getMaxSalary();
 		this.minSalary = job.getMinSalary();
+		this.maxSalary = job.getMaxSalary();
 		this.location = job.getLocation();
 	}
+
 }

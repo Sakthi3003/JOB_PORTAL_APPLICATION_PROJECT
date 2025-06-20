@@ -7,9 +7,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class JobAddDTO {
+@AllArgsConstructor
+public class UpdateJobDTO {
+	private Long id;
 	private String title;
 	private String description;
 	private String minSalary;
