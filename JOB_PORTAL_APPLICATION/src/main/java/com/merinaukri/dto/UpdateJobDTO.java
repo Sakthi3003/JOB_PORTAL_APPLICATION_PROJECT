@@ -1,5 +1,7 @@
 package com.merinaukri.dto;
 
+import com.merinaukri.company.Company;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,4 +18,5 @@ public class UpdateJobDTO {
 	private String minSalary;
 	private String maxSalary;
 	private String location;
+	private Company company;
 }

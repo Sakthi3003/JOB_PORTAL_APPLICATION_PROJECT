@@ -1,7 +1,6 @@
 package com.merinaukri.job;
-import java.util.ArrayList;
-import java.util.List;
 
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.merinaukri.dto.AddJobDTO;
 import com.merinaukri.dto.DisplayJobDTO;
 import com.merinaukri.dto.UpdateJobDTO;
@@ -40,8 +38,8 @@ public class JobController {
 	}
 	
 	@GetMapping("{id}")  // common api design accross application even it is not found
-	public ResponseEntity<DisplayJobDTO> getJobById(@PathVariable int id) {
-		Job job = jobService.getJobById();
+	public ResponseEntity<DisplayJobDTO> getJobById(@PathVariable Long id) {
+		Job job = jobService.getJobById(id);
 		if(job != null) {
 			return new ResponseEntity<>(new DisplayJobDTO(job), HttpStatus.OK);
 		}else {
@@ -50,7 +48,7 @@ public class JobController {
 	}
 	
 	@DeleteMapping("{id}")
-	public ResponseEntity<String> deleteJobById(@PathVariable int id){
+	public ResponseEntity<String> deleteJobById(@PathVariable Long id){
 		boolean deleted = jobService.deleteJobById(id);
 		
 		if(deleted) {	
@@ -61,7 +59,7 @@ public class JobController {
 	}
 	
 	@PutMapping("{id}")
-	public ResponseEntity<String> updateJob(@PathVariable int id, @RequestBody UpdateJobDTO dto){
+	public ResponseEntity<String> updateJob(@PathVariable Long id, @RequestBody UpdateJobDTO dto){
 		boolean updated = jobService.updateJob(id,dto );
 		if(updated) {
 			return new ResponseEntity<>("Job updated successfully", HttpStatus.OK);

@@ -1,6 +1,8 @@
 package com.merinaukri.dto;
 
-import com.merinaukri.company.Company;
+import java.util.List;
+
+import com.merinaukri.job.Job;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,11 +13,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddJobDTO {
-	private String title;
+public class CompanyUpdateDTO {
+	private Long id;
+	private String name;
 	private String description;
-	private String minSalary;
-	private String maxSalary;
-	private String location;
-	private Long companyId;
+	private List<Job> jobs;
 }

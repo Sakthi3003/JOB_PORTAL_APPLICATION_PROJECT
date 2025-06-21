@@ -11,11 +11,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddJobDTO {
-	private String title;
+public class DisplayCompanyDTO {
+	private Long id;
+	private String name;
 	private String description;
-	private String minSalary;
-	private String maxSalary;
-	private String location;
-	private Long companyId;
+
+public DisplayCompanyDTO(Company company) {
+	this.id = company.getId();
+	this.name = company.getName();
+	this.description = company.getDescription();
+	}
 }
