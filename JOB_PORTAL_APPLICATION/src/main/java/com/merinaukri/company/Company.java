@@ -1,9 +1,13 @@
 package com.merinaukri.company;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.merinaukri.job.Job;
+import com.merinaukri.review.Review;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,7 +34,7 @@ public class Company {
 	@JsonIgnore
 	private List<Job> job;
 	
-//	@OneToMany
-//	private List<Review> reviews;
+	@OneToMany(mappedBy="company", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Review> reviews = new ArrayList<>();
 
 }
