@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.merinaukri.jobms.dto.AddJobDTO;
 import com.merinaukri.jobms.dto.DisplayJobDTO;
+import com.merinaukri.jobms.dto.JobDTO;
 import com.merinaukri.jobms.dto.UpdateJobDTO;
 
 
@@ -29,7 +30,7 @@ public class JobController {
 	}
 
 	@GetMapping()
-	public List<Job> getAllJobs(){
+	public List<JobDTO> getAllJobs(){
 		return jobService.findAll();
 	}
 	
@@ -40,10 +41,10 @@ public class JobController {
 	}
 	
 	@GetMapping("{id}")  // common api design accross application even it is not found
-	public ResponseEntity<DisplayJobDTO> getJobById(@PathVariable Long id) {
-		Job job = jobService.getJobById(id);
+	public ResponseEntity<JobDTO> getJobById(@PathVariable Long id) {
+		JobDTO job = jobService.getJobById(id);
 		if(job != null) {
-			return new ResponseEntity<>(new DisplayJobDTO(job), HttpStatus.OK);
+			return new ResponseEntity<>(job, HttpStatus.OK);
 		}else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
