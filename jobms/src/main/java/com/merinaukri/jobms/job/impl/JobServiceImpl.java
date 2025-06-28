@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.merinaukri.jobms.clients.CompanyClient;
+import com.merinaukri.jobms.clients.ReviewClient;
 import com.merinaukri.jobms.dto.AddJobDTO;
 import com.merinaukri.jobms.dto.JobDTO;
 import com.merinaukri.jobms.dto.UpdateJobDTO;
@@ -27,9 +29,18 @@ public class JobServiceImpl implements JobService {
 	
 	private RestTemplate restTemplate;
 	
-	public JobServiceImpl(JobRepository jobRepository, RestTemplate restTemplate) {
+	private CompanyClient companyClient;
+	
+	private ReviewClient reviewClient;
+	
+	
+	public JobServiceImpl(JobRepository jobRepository, RestTemplate restTemplate,
+			CompanyClient companyClient,
+			ReviewClient reviewClient) {
 		this.jobRepository =  jobRepository;
 		this.restTemplate = restTemplate;
+		this.companyClient = companyClient;
+		this.reviewClient = reviewClient;
 	}
 	
 	@Override
@@ -56,17 +67,10 @@ public class JobServiceImpl implements JobService {
 	public JobDTO getJobById(Long id) {
 		Job job =jobRepository.findById(id).orElse(null);
 		
-		Company company = restTemplate.getForObject(
-				"http://COMPANYMS:8897/api/company/"+job.getCompanyId(), 
-				Company.class);
+		Company company = companyClient.getCompanyById(job.getCompanyId());
 		
-	    ResponseEntity<List<Review>> reviewResponse = restTemplate.exchange(
-	    		"http://REVIEWMS:8896/api/reviews?companyId="+job.getCompanyId(), 
-	    		HttpMethod.GET,
-	    		null,
-	    		new ParameterizedTypeReference<List<Review>>() {});
-	    
-	    List<Review> reviews = reviewResponse.getBody();
+	    List<Review> reviews = reviewClient.getReviews(job.getCompanyId());
+
 	    JobDTO jobDto = JobMapper.mapToJobDto(job, company,reviews);
 		return jobDto;
 	}
@@ -99,17 +103,11 @@ public class JobServiceImpl implements JobService {
 	}
 	
 	private JobDTO convertToDTO(Job job) {
-		Company company = restTemplate.getForObject(
-				"http://COMPANYMS:8897/api/company/"+job.getCompanyId(), 
-				Company.class);
+		Company company = companyClient.getCompanyById(job.getCompanyId());
 		
-	    ResponseEntity<List<Review>> reviewResponse = restTemplate.exchange(
-	    		"http://REVIEWMS:8896/api/reviews?companyId="+job.getCompanyId(), 
-	    		HttpMethod.GET,
-	    		null,
-	    		new ParameterizedTypeReference<List<Review>>() {});
+	    List<Review> reviews = reviewClient.getReviews(job.getCompanyId());
 	    
-	    JobDTO jobDTO = JobMapper.mapToJobDto(job, company, reviewResponse.getBody());
+	    JobDTO jobDTO = JobMapper.mapToJobDto(job, company, reviews);
 	    return jobDTO;
 	}
 

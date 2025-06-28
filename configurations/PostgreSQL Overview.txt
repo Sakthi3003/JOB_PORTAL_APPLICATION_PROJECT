@@ -1,0 +1,144 @@
+ PostgreSQL Overview
+PostgreSQL is a powerful open-source Object-Relational Database Management System (ORDBMS) known for:
+
+✅ SQL compliance
+
+🔁 Extensibility – like programming languages, you can define custom data types, operators, and more
+
+🚀 Performance optimization features
+
+🧠 Strong community support
+
+🔐 Data integrity and reliability
+
+📈 Scalability – suitable for large-scale production apps
+
+🛠️ Rich ecosystem – supports GIS (PostGIS), full-text search, JSON, etc.
+
+💾 Durability – ACID-compliant for reliable data handling
+
+In contrast, H2 Database is an in-memory, embedded database, mainly used for testing or small apps. For larger applications, PostgreSQL is preferred due to its durability, scalability, and advanced features.
+
+🛠️ Maven Dependency
+To use PostgreSQL in your Spring Boot project, add the following dependency:
+
+xml
+Copy
+Edit
+<dependency>
+  <groupId>org.postgresql</groupId>
+  <artifactId>postgresql</artifactId>
+  <scope>runtime</scope>
+</dependency>
+⚙️ Spring Boot PostgreSQL Configuration
+Add the following to your application.properties:
+
+properties
+Copy
+Edit
+# PostgreSQL Database Configuration
+spring.datasource.url=jdbc:postgresql://localhost:5432/jobapp
+spring.datasource.username=your_postgres_username
+spring.datasource.password=your_postgres_password
+
+# JPA Configuration
+spring.jpa.database=POSTGRESQL
+spring.jpa.show-sql=true
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+🐳 Running PostgreSQL & pgAdmin using Docker
+🔄 Step 1: Pull PostgreSQL and pgAdmin images
+bash
+Copy
+Edit
+docker pull postgres
+docker pull dpage/pgadmin4
+🔄 Step 2: Create a Docker network for communication
+bash
+Copy
+Edit
+docker network create my-network
+🚀 Step 3: Run PostgreSQL container
+bash
+Copy
+Edit
+docker run -d \
+  --name db \
+  --network my-network \
+  -e POSTGRES_PASSWORD=Sahi@3003 \
+  postgres
+🚀 Step 4: Run pgAdmin container
+bash
+Copy
+Edit
+docker run -d \
+  --name pgadmin \
+  --network my-network \
+  -e PGADMIN_DEFAULT_EMAIL=tsakthisowmya30@gmail.com \
+  -e PGADMIN_DEFAULT_PASSWORD=Sahi@3003 \
+  -p 5050:80 \
+  dpage/pgadmin4
+🔎 Step 5: Verify communication between containers
+bash
+Copy
+Edit
+docker exec -it pgadmin ping db
+If they are on the same network (my-network), you should see successful ping responses. If not, recreate containers with proper networking.
+
+🧹 If containers are not communicating
+Remove the containers:
+
+bash
+Copy
+Edit
+docker rm -f db pgadmin
+Then rerun them with --network my-network.
+
+📦 Docker Compose Setup
+Docker Compose is a tool to manage multi-container applications using a single YAML file.
+
+📄 Example docker-compose.yml
+yaml
+Copy
+Edit
+version: '3.8'
+
+services:
+  db:
+    image: postgres
+    container_name: db
+    environment:
+      POSTGRES_PASSWORD: Sahi@3003
+    networks:
+      - my-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: tsakthisowmya30@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: Sahi@3003
+    networks:
+      - my-network
+
+networks:
+  my-network:
+▶️ Run with Docker Compose
+bash
+Copy
+Edit
+docker compose up -d
+Check containers:
+
+bash
+Copy
+Edit
+docker ps
+Access pgAdmin at: http://localhost:5050
+
+💡 Pro Tip:
+Each microservice should run independently in its own container and communicate through Docker networks or APIs. Docker Compose simplifies the orchestration of such services.
+
+Let me know if you wa

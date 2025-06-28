@@ -1,0 +1,79 @@
+Open feign
+----------
+
+OpenFeign is a Java library used in Spring Boot to make it super easy to call other APIs—just like calling a regular method!
+
+🧁 Real-Life Analogy:
+Imagine you want to order a cake 🎂 from a bakery (another service).
+Instead of going there, you just call them and say:
+
+"Hey, I need a chocolate cake!"
+
+And they deliver it to you.
+
+That’s what Feign does. It calls another service for you—neatly and easily—without you writing a lot of HTTP code.
+
+🤓 Without Feign:
+You write a lot of boilerplate:
+
+RestTemplate restTemplate = new RestTemplate();
+String response = restTemplate.getForObject("http://cake-service/order", String.class);
+😎 With Feign:
+You just create an interface like this:
+
+@FeignClient(name = "cake-service")
+public interface CakeClient {
+    
+    @GetMapping("/order")
+    String orderCake();
+}
+And use it like this:
+
+java
+Copy
+Edit
+@Autowired
+CakeClient cakeClient;
+
+public void getCake() {
+    String cake = cakeClient.orderCake();
+    System.out.println(cake);
+}
+✅ What it does behind the scenes:
+It sends the HTTP request for you
+
+Handles the URL
+
+Converts the response
+
+Makes your code cleaner
+
+🧩 When do you use it?
+When you are building Microservices
+
+When one service needs to call another service
+
+To reduce boilerplate HTTP code
+
+🛠️ How to enable it?
+In your main class:
+
+java
+Copy
+Edit
+@EnableFeignClients
+@SpringBootApplication
+public class YourApp {
+    public static void main(String[] args) {
+        SpringApplication.run(YourApp.class, args);
+    }
+}
+
+
+
+@FeignClient(name = "COMPANYMS")
+public interface CompanyClient {
+
+	@GetMapping("/api/company/{id}")
+	Company getCompanyById(@PathVariable Long id);
+}

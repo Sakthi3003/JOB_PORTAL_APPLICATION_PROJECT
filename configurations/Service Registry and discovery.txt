@@ -1,0 +1,141 @@
+What is Service Discovery?
+Service Discovery helps microservices find each other without hardcoding IP addresses or ports.
+
+Imagine you have many services (like job, review, user). These services can start, stop, scale, or move. So, their locations can change often.
+Hardcoding addresses would break everything!
+
+Instead, with service discovery, a microservice simply asks:
+
+“Hey, where is the service I want to talk to?”
+
+And the Service Registry answers with the current address (IP + port) of that service.
+
+🗂️ What is a Service Registry?
+A Service Registry is like a phone directory for microservices.
+It keeps a record of all running services and their locations.
+
+✅ Responsibilities:
+Microservices register themselves when they start.
+
+They deregister when they stop.
+
+Other microservices can query the registry to get the current address of a service.
+
+🔁 How it Works (Example):
+Let’s say you have two microservices:
+
+Job-Service
+
+Review-Service
+
+Job-Service starts and registers itself in the Service Registry.
+
+Now, Review-Service wants to call Job-Service.
+
+Review-Service sends a discovery request to the registry:
+
+“Where is Job-Service?”
+
+The registry replies with the current IP and port.
+
+Review-Service then uses that info to communicate with Job-Service.
+
+This whole process is dynamic, automatic, and reliable.
+
+⚙️ Using Spring Cloud Netflix Eureka
+Netflix created Eureka, which is a popular Service Registry for Java microservices.
+
+🛠️ Setting Up Eureka Server
+Step 1: Create a New Project
+Go to https://start.spring.io
+
+Choose:
+
+Project: Maven
+
+Dependencies: Spring Web, Eureka Server
+
+Generate and open the project in your IDE
+
+Step 2: Enable Eureka Server
+In your main application class:
+
+java
+Copy
+Edit
+@SpringBootApplication
+@EnableEurekaServer
+public class ServiceRegistryApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(ServiceRegistryApplication.class, args);
+    }
+}
+Step 3: Add Configuration in application.properties
+properties
+Copy
+Edit
+spring.application.name=ServiceRegistry
+server.port=8895
+
+# This is the registry itself, so it doesn't need to register with another registry
+eureka.client.register-with-eureka=false
+
+# It also doesn't need to fetch registry info from anywhere else
+eureka.client.fetch-registry=false
+🧩 Setting Up Eureka Client (Your Microservices)
+For each microservice (e.g., Job-Service, Review-Service):
+
+Add Eureka Client Dependency
+In pom.xml, add:
+
+xml
+Copy
+Edit
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+</dependency>
+Also add version management (usually in parent or dependency management section):
+
+xml
+Copy
+Edit
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-dependencies</artifactId>
+            <version>your_version_here</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+Add Config in application.properties
+properties
+Copy
+Edit
+spring.application.name=JobService
+
+# Port of this microservice
+server.port=8081
+
+# Eureka Server URL
+eureka.client.service-url.defaultZone=http://localhost:8895/eureka/
+Enable Eureka Client in main class
+java
+Copy
+Edit
+@SpringBootApplication
+@EnableEurekaClient
+public class JobServiceApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(JobServiceApplication.class, args);
+    }
+}
+✅ Summary
+Concept	Purpose
+Service Discovery	Finds where services are running dynamically
+Service Registry (Eureka)	Keeps track of all services and their addresses
+Eureka Server	The registry where services register themselves
+Eureka Client	Microservices that register and discover services

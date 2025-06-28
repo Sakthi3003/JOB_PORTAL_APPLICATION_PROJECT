@@ -1,0 +1,37 @@
+ Microservices
+--------------
+
+World before microservice
+
+1) monolithic application
+2) All the components are packed in single application
+3) Run in single server
+
+Problems
+--------
+
+They are tightly combined 
+They are interlinked. 
+Changes are hard to change
+long term commitment to a single technological stack
+complexity 
+Bugs
+Slowing down of IDE
+Lower application start time
+Large project size changengin to manage and maintain
+
+Microservices
+---------------
+Structures the application into small autonomous services
+Architechtre style used to structure a application
+
+
+PRINCIPLES
+-----------
+-> Single responsibility
+-> independence
+-> Decentralisation-> distributed
+-> failure isolation 
+-> continuous delivery/deployment -> each can be updated independently
+
+
