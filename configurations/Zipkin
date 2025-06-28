@@ -1,0 +1,70 @@
+
+MICROMETER
+----------
+
+MICROMETER COLLECT METRICS FROM THE APPLICATION
+
+acts as a middle man between the collector of the zipkin and the application
+
+gives  good interface
+
+ 
+ <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-tracing-bridge-brave</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.zipkin.reporter2</groupId>
+      <artifactId>zipkin-reporter-brave</artifactId>
+    </dependency>
+
+application properties 
+
+
+
+two dependency are added to the project 
+
+ micrometer-tracing-bridge-brave
+xml
+Copy
+Edit
+<dependency>
+  <groupId>io.micrometer</groupId>
+  <artifactId>micrometer-tracing-bridge-brave</artifactId>
+</dependency>
+✅ What it does:
+This dependency connects Spring Boot's Micrometer Tracing with Brave (a tracing library created by the Zipkin team).
+
+🗂️ Think of it like:
+
+“I collect trace data in Spring Boot ➡️ I want to send it using Brave ➡️ I need this bridge.”
+
+2️⃣ zipkin-reporter-brave
+xml
+Copy
+Edit
+<dependency>
+  <groupId>io.zipkin.reporter2</groupId>
+  <artifactId>zipkin-reporter-brave</artifactId>
+</dependency>
+✅ What it does:
+This is the reporter that sends tracing data to Zipkin using Brave.
+
+🗂️ Think of it like:
+
+“Now that I have the trace data (with Brave), I need to report/send it to the Zipkin server.”
+
+🔗 Together:
+Dependency	Role
+micrometer-tracing-bridge-brave	Connects Spring Boot’s Micrometer with Brave
+zipkin-reporter-brave	Sends the trace data from Brave to Zipkin
+
+🖼️ Real-world analogy:
+You (Spring Boot app) want to track delivery (tracing):
+
+🛠️ Micrometer builds tracking info
+
+🧩 Brave packages it
+
+📦 zipkin-reporter sends it to Zipkin server
+
