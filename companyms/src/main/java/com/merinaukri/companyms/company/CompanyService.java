@@ -12,4 +12,5 @@ public interface CompanyService {
 	
 	Company getCompanyId(Long id);
 	Boolean deleteJobById(Long id);
+	// company service 
 }
