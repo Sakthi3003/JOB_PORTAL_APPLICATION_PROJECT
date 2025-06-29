@@ -2,6 +2,7 @@ package com.merinaukri.companyms.company;
 
 import java.util.List;
 
+import com.merinaukri.companyms.company.Company;
 import com.merinaukri.companyms.dto.CompanyAddDTO;
 import com.merinaukri.companyms.dto.CompanyUpdateDTO;
 
