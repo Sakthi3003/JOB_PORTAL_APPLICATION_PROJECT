@@ -1,0 +1,81 @@
+Configuration Management
+
+Simply means managing and controlling the configuration of each microservice in the system.
+
+Configuration may incluse details such as database connection service url caching settings.
+
+It is a challenge as the microservice increase
+
+
+service 1 -
+
+service 2 -   config server
+
+service 3 -
+
+
+
+Centralised and versioned configurations
+
+dynamic updates
+
+security
+
+easy to deploy scale microservices
+
+
+Spring Cloud config servcer 
+---------------------------
+
+Storing config
+serving config
+refreshing config
+easy integration with spring
+
+
+
+Create a new spring project add two dependency of
+
+Config server
+eureka discovery server
+
+Application properties
+----------------------
+spring.application.name=configserver
+
+#eureka
+
+#Url mentioning
+eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka/
+
+@EnableConfigServer in main application
+
+GITHUB
+-------
+
+create applications.properties file
+
+create a GitHub repository as app config which will act as configuration file for the microservices
+
+spring.application.name=configserver
+
+server.port=8892
+#eureka
+
+#Url mentioning
+eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka/
+
+#git uri
+spring.cloud.config.server.git.uri=https://github.com/Sakthi3003/application-config
+
+
+http://localhost:8892/application/default
+
+http://localhost:8892/application/dev -> a new file in the application comfig repository -> application-prod.properties
+
+and also can create for test too
+
+
+Now who is going to fetch it from the application 
+
+use the dependency 

@@ -1,0 +1,92 @@
+Api gateway 
+-----------
+
+API - api gateway serves a single entry point 
+
+1) encapsulate the internal system architechture
+
+   ADDING NEW MICROSERVICE 
+   EDITING 
+   
+2) SECURITY, LOAD BALANCING, rate limiting, and analytics
+
+3) Can authenticate incoming request and pass only valid request
+
+4) can aggregate response from different microservice
+
+
+It is used to route request to the right service
+
+Load balancing
+
+rate limiting
+
+authentication and authorisation
+
+
+
+STEPS
+------
+
+create a new project for gateway we use the 
+CONFIG SERVER 
+
+zipkin
+
+eureka discovery client
+
+
+
+
+
+add this application.properties 
+--------------------------------
+
+spring.application.name=gateway
+
+
+
+server.port=8891
+
+
+
+
+#eureka
+
+#Url mentioning
+eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka/
+
+
+# this project is a eureka server so it need not register itself
+eureka.client.register-with-eureka=true
+
+# this project is already present need not fetch from anywhere
+eureka.client.fetch-registry=true
+
+
+
+# Zipkin
+# this command 100% of the requests will be traced and sent to Zipkin. 0.1 means 10%
+management.tracing.sampling.probability=1.0
+
+
+
+#Gateway
+spring.cloud.gateway.routes[0].id=companyms
+spring.cloud.gateway.routes[0].uri=http://localhost:8897
+spring.cloud.gateway.routes[0].predicates[0]=Path=/companyms/**
+
+spring.cloud.gateway.routes[1].id=jobms
+spring.cloud.gateway.routes[1].uri=http://localhost:8898
+spring.cloud.gateway.routes[1].predicates[0]=Path=/jobms/**
+
+spring.cloud.gateway.routes[2].id=reviewms
+spring.cloud.gateway.routes[2].uri=http://localhost:8896
+spring.cloud.gateway.routes[2].predicates[0]=Path=/reviewms/**
+
+
+
+logging.level.root=info
+logging.level.org.springframework.cloud.gateway.route.RouteDefinitionLocator=INFO
+logging.level.org.springframework.cloud.gateway=TRACE
+
