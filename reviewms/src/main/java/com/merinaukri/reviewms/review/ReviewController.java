@@ -18,7 +18,7 @@ import com.merinaukri.reviewms.dto.ReviewDTO;
 import com.merinaukri.reviewms.dto.UpdateReviewDTO;
 
 @RestController
-@RequestMapping("/api/reviews")
+@RequestMapping("/reviews")
 public class ReviewController {
 	private ReviewService reviewService;
 	

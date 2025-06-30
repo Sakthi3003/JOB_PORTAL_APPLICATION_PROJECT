@@ -19,7 +19,7 @@ import com.merinaukri.jobms.dto.UpdateJobDTO;
 
 
 @RestController
-@RequestMapping("/api/jobs")
+@RequestMapping("/jobs")
 public class JobController {
 	
 	private JobService jobService;

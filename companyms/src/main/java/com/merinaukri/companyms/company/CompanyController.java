@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.merinaukri.companyms.dto.CompanyAddDTO;
 import com.merinaukri.companyms.dto.CompanyUpdateDTO;
 @RestController
-@RequestMapping("api/company")
+@RequestMapping("/company")
 public class CompanyController {
 	private CompanyService companyService;
 	
