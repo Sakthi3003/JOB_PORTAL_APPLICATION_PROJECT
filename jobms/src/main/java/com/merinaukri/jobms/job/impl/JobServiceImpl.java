@@ -1,5 +1,6 @@
 package com.merinaukri.jobms.job.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +21,8 @@ import com.merinaukri.jobms.job.Job;
 import com.merinaukri.jobms.job.JobRepository;
 import com.merinaukri.jobms.job.JobService;
 import com.merinaukri.jobms.mapper.JobMapper;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 
 @Service
@@ -44,9 +47,16 @@ public class JobServiceImpl implements JobService {
 	}
 	
 	@Override
+	@CircuitBreaker(name="CompanyBreaker", fallbackMethod="fallbackMethod")
 	public List<JobDTO> findAll() {
 		List<JobDTO> jobs = jobRepository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
 		return jobs;
+	}
+	
+	public List<String> fallbackMethod(Exception e){
+		List<String> list = new ArrayList<>();
+		list.add("Dummy");
+		return list;
 	}
 
 	@Override

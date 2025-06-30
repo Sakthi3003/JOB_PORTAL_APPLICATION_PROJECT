@@ -1,0 +1,151 @@
+Fault tolerance 
+-----------------
+
+
+Ability to continue operating without interrupting
+
+Needs
+-----
+
+if the failure in one microservice happens that must not affect and must be cured
+
+Deployment issue
+
+Tolerate external failures
+
+
+
+Resilience 4J
+-------------
+
+Ability or capacity to recover quickly form difficulties
+
+
+Techniques
+-----------
+
+Retreis -> resource timeout kind of issue client can try retry again and again
+
+Rate Limiting -> controls the number of request the microservuce can handle
+
+Bulkheads -> 
+
+Circuit breaker -> monitor the health of the microservices and prevent cascading failure
+
+Fallback are alternamtive response
+
+Timeout
+
+graceful degradation
+
+
+
+Resilience4j is a light weight fault tolerance library
+
+it is a good choice because easy integration and build for functional programing paradigm
+
+Modules
+--------
+
+Retry module ->  Rather than failing immediateky we can retry it 
+
+RateLimiter -> When a service can handle one particular number of request where rate limited comes into pictures
+
+Bulkhead -> isolates failure and prevents them from cascading system
+
+Circuit breaker -> prevent a service failure not affecting the other
+
+
+CIRCUIT BREAKING
+-----------------
+
+Google resilience 4j 
+
+
+start.spring.io add this dependency of circutit breker and aop
+
+<dependency>
+<groupId>org.springframework.cloud</groupId>
+<artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+</dependency>
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-aop</artifactId>	
+</dependency>
+
+u also need actuator to get the detailed health
+
+#Actuator
+
+management.endpoints.web.exposure.include=health
+management.endpoint.health.show-details=always
+
+restart
+the application
+
+
+This actuator help us to see the circuit breaker details too
+
+Retry 
+
+fallback mechanism
+
+with config available
+
+
+-------------
+Rate limiting
+--------------
+It is used to limit the request that the client can make to server
+
+
+Preventing abuse
+
+usecases
+APIs
+Web scraping
+Login Attempt
+
+
+Distributes Denial of service attack means
+
+JMETER
+
+
+
+# retry mechanism
+resilience4j.circuitbreaker.instances.companyBreaker.max-attempts=5
+resilience4j.circuitbreaker.instances.companyBreaker.wait-duration=2s
+
+
+
+#rate limiter 
+resilience4j.ratelimiter.instance.companyBreaker.timeout-duration=0
+resilience4j.ratelimiter.instances.companyBreaker.limit-refresh-period=4
+resilience4j.ratelimiter.instances.companyBreaker.limit-for-period=2
+
+#Actuator
+management.health.circuitbreakers.enabled=true
+
+
+@CircuitBreaker(name ="CompanyBreaker",fallbackMethod="CompanyBreakerFallback")
+
+
+@Retry(name="CompanyBreaker", fallbackMethod= "companyBreakerFallback")
+
+@RateLimiter(name="companyBreaker", fallbackMethod="companyBreakerFallback")
+
+
+int attempt;
+
+print attempt im the find all method
+
+public List<String> companyBreakerFallback(Exception e){
+List<String> list = new ArrayList<>();
+list.add("Dummy");
+return list;
+}
+
+
+
+
