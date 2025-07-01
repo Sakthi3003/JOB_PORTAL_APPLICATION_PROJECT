@@ -28,7 +28,7 @@ public class ReviewServiceImpl implements ReviewService{
 	}
 
 	@Override
-	public Boolean writeReview(Long companyId, ReviewDTO dto) {
+	public Review writeReview(Long companyId, ReviewDTO dto) {
 		if(companyId!=null) {
 //			Company company = companyRepository.findById(companyId).get();
 			Review review = new Review();
@@ -38,9 +38,9 @@ public class ReviewServiceImpl implements ReviewService{
 			review.setCompanyId(companyId);
 			reviewRepository.save(review);
 			
-			return true;
+			return review;
 		}else {
-			return false;
+			return null;
 		}
 		
 		

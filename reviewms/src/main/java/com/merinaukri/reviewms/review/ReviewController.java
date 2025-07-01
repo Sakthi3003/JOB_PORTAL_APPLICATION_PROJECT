@@ -16,14 +16,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.merinaukri.reviewms.dto.ReviewDTO;
 import com.merinaukri.reviewms.dto.UpdateReviewDTO;
+import com.merinaukri.reviewms.review.messaging.ReviewMessageProducer;
 
 @RestController
 @RequestMapping("/reviews")
 public class ReviewController {
 	private ReviewService reviewService;
 	
-	public ReviewController(ReviewService reviewService) {
+	private ReviewMessageProducer reviewMessageProducer;
+	
+	public ReviewController(ReviewService reviewService, ReviewMessageProducer reviewMessageProducer) {
 		this.reviewService = reviewService;
+		this.reviewMessageProducer = reviewMessageProducer;
 	}
 	
 	@GetMapping
@@ -33,8 +37,10 @@ public class ReviewController {
 	
 	@PostMapping
 	public ResponseEntity<String> writeReview(@RequestParam Long companyId,@RequestBody ReviewDTO dto){
-		Boolean isReviewSaved = reviewService.writeReview(companyId, dto);
-		if(isReviewSaved) {
+		Review review = reviewService.writeReview(companyId, dto);
+		
+		if(review != null) {
+			reviewMessageProducer.sendMessage(review);
 			return new ResponseEntity<>("Revie added successfully", HttpStatus.OK);
 		}else {
 			return new ResponseEntity<>("Review not saved", HttpStatus.NOT_FOUND);
@@ -69,6 +75,12 @@ public class ReviewController {
 		}else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+	}
+	
+	@GetMapping("/averageRating")
+	public Double getAverageReview(@RequestParam Long companyId) {
+		List<Review> reviewList=reviewService.getAllReview(companyId);
+		return reviewList.stream().mapToDouble(Review::getRating).average().orElse(0.0);
 	}
 	
 	
