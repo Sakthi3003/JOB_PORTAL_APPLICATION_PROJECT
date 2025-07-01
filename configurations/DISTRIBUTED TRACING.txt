@@ -1,1 +1,82 @@
 DISTRIBUTED TRACING
+
+What is Distributed Tracing?
+Distributed Tracing is a method used to track and observe the flow of a single request as it travels through multiple services or components in a distributed system (like microservices).
+
+✅ Key Points:
+Helps you see the complete journey of a request
+
+Shows which services were called, in what order
+
+Identifies where delays or failures happen
+
+Each step of the request is recorded as a span; all spans are linked by a trace ID
+
+
+
+What is Zipkin?
+
+
+Zipkin is an open-source Distributed Tracing System that helps collect, store, and visualize trace data.
+
+✅ What Zipkin does:
+Receives trace data from your services
+
+Displays request timelines
+
+Shows which service took how long
+
+Helps debug performance issues in microservices
+
+🧩 Zipkin + Spring Cloud Sleuth
+Sleuth adds trace and span IDs to logs and headers
+
+Zipkin collects and shows that trace data in a UI
+
+🔗 One-liner Definitions:
+Distributed Tracing:
+
+A method to trace the full path of a request across multiple microservices to monitor performance and pinpoint issues.
+
+Zipkin:
+
+A distributed tracing tool that collects and visualizes trace data from services to help developers understand request flows and troubleshoot issues.
+
+
+Company microservice -> 
+to Zipkin which has
+
+Collector - collect all the traces
+storate -> store all the data
+search -> ui helps us to search
+visualisation -> helps u to visualisation
+
+
+trace is tree of work done based on the request journey of a request
+
+ Span id show the indivual work like it denotes a microservice a new span Is created to represent the operation done by the microservice
+
+Zipkin quickstart 
+java jar download and place in in the project and run it 
+java -jar "zipkin-server-3.5.1-exec.jar" filename
+
+
+9411 port number to use zipkin
+
+or stop and use zipkin docker 
+
+docker run -d -p 9411:9411 openzipkin/zipkin
+
+
+docker compose service commands
+ zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - 9411:9411
+    networks:
+      - postgres
+add them and run them makes things easier
+
+
+

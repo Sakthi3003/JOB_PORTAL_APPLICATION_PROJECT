@@ -78,4 +78,30 @@ and also can create for test too
 
 Now who is going to fetch it from the application 
 
-use the dependency 
+config-client
+
+use the dependency to connect the spring cloud config server - fetch application configurations
+
+
+add this to the properties file of the application microservuce u mentioned
+
+
+#CONFIG SERVER - COMPANY MICROSERVICE APPLICATION PROPERTIES
+spring.config.import=configserver:http://localhost:8892 
+
+uses of above -> optional: it is used when config server is not available
+
+spring.profiles.active=dev
+
+Config server
+--------------
+
+making ur project use the config in the GitHub instead of the local fike
+
+this GitHub 
+
+
+
+
+
+

@@ -1,0 +1,83 @@
+Docker 
+------
+
+1) Step one docker install for windows
+2) Have an account in docker hub which will have all the images they are stored here
+3) install docker and add ur account
+4) add this command 
+
+"mvnw spring-boot:build-image "-Dspring-boot.build-image.imageName=imagename" "
+
+when running the command 
+make sure 
+ -Ur docker is running in ur machine
+ - the version of the project and the JAVA_HOME version must be same
+ - The docker is done here using the cloud native build pack which dont use the docker file and give command in terminal and it shows packeto build packs
+
+
+docker push imagebane
+docker login
+
+
+when u give this command 
+
+"mvnw spring-boot:build-image "-Dspring-boot.build-image.imageName=username/imagename" " 
+
+username is imp because then only u can push into the hb
+
+
+mvnw clean spring-boot:build-image -Dspring-boot.build-image.imageName=sahi3003/jobappimage
+
+
+docker push sahi3003/jobappimage
+
+send as layers packeto layers happen
+
+go to the coker hub and see the image
+
+
+1) docker pull <image>
+2) docker push <username/imageName>
+3) docker run -it -d -p <host-port>:<container-port> --name <name> <image>
+it - interactive
+d - detach mode - it happens as a separate process
+
+non - detach mode - you cant do anything in the terminal. if u close the terminal the container stops 
+
+p - port u can give the port
+
+4) docker stop <container-id/container-name>
+
+5) docker start <container-id/container-name>
+
+6) docker rm <container-id/container-name>
+
+7) docker rmi <image-id/image-name>  remove image
+
+8) docker ps -> give all the container that are running
+
+9) docker ps -a -> give all container that are stppper and running
+
+10) docker images -> list all images
+
+11) docker exec -it <container-name/container-id> bash
+
+12) docker build -t <username/imagename>
+
+13) docker logs <container-name/container-id>
+
+14) docker inspect <container-name/container-id>
+
+docker run -p 8899:8899 sahi3003/jobappimage - running in non detach mode 
+on control - c, the container stops but when u run in detach mode the container runs 
+
+on detach mode it gives -d the container runs 
+
+
+
+
+
+
+
+
+
