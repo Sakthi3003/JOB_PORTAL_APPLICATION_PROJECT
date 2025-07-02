@@ -1,0 +1,99 @@
+Message queue
+-------------
+
+Job service sends message like request. But when the company microservices
+is down it stops because it is synchronous
+
+
+So message queue used for asynchronous communication
+
+A message queue will take the messages
+
+When the review is up, then it can consume
+
+
+Need for asynchronous communication
+
+-> decoupling
+-> asynchoronous communication
+-> scalability
+-> fault tolerance
+-> Event driven architechture
+-> Time decoupling
+
+
+Message queue is a asynchrounous service to service communication 
+The message is processed once and used by one consumer and they are in the queue and process one by one
+
+
+RABBIT MQ
+----------
+
+It is a software for asynchronous message queue
+
+
+Simple Analogy:
+Fallback = “If pizza shop is closed, I’ll make Maggi at home.”
+
+Message Queue = “I place an order online; delivery comes later.”
+
+
+Rabbit 	mq	
+
+Docker compose : 
+
+ rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - postgres
+
+or 
+
+# latest RabbitMQ 4.x
+docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:4-management
+
+
+
+Go to start.spring.io
+
+
+dependency -> rabbit mq dependency
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-amqp</artifactId>
+    </dependency>
+
+  
+Application properties
+
+spring.rabbitmq.host=localhost
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=guest
+spring.rabbitmq.password=guest
+
+
+Create a package For messaging 
+
+Class 1 container config
+
+Class 2 has producer container of all logics
+
+
+created a producer and config and implementaiotn'
+
+Same way created consume in the other application and written all the implementation
+
+Use case
+----------
+
+When a review for a company is added then that information must be sended to the company thru the messaging service.
+
+
+
+
+
