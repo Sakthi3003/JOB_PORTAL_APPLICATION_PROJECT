@@ -1,0 +1,68 @@
+THERORY OF PACKAGING
+
+
+Package the application into jar
+--------------------------------
+
+Execution of spring boot applicatioj
+
+1) Code compilation
+2) Running the main class
+3) class path and dependencies
+4) Embedded server
+5) Source code changes
+6) Considered as development mode
+
+For production environment
+
+Packaging
+---------
+
+Packaginf is involves compiling your source code into bytecode
+bunding it with any dependent libraries and creating a executanle artifact that canbe easilu distributed and run.
+
+
+
+Package = bytecode + dependent libraries + configuration
+
+
+Benefits of jar(packaging as jar)
+
+Simplified deployment
+
+Inclusion of everything our application need
+
+JRE executes JAR files
+
+Other packaging option like WAR, EAR Or docker image
+
+
+
+
+
+
+INSTALLING MAVEN
+----------------
+
+Download from website or use maven wrapper
+
+mvn clean -> remove all the file from the previous build
+
+mvn package -> combine the apllcation compile and package to jar and placed in target directory
+
+
+mvn clean package -> clean and package 
+
+
+if u are using mvn wrapper u dont need the above code
+
+STEPS
+------
+
+./mvnw package
+
+jar -tf .\target\companyms-0.0.1-SNAPSHOT.jar
+
+run u executable jar and run the application
+
+java -jar .\targer\companyms-0.0.1-SNAPSHOT.jar
