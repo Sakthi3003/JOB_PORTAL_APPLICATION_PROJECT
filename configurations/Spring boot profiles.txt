@@ -1,0 +1,75 @@
+Spring boot profiles
+--------------------
+
+When u run the container, u cant run with local host because they are profile
+
+Based on the environment we run our application, we need to change the configuration
+
+
+This is where profile comes in.
+
+If microservice is running in production, dev, or in testing then config need to be changed right
+
+Profile are important
+ 
+
+Practical steps
+---------------
+
+Create a duplicate of the application.properties as application-docker.property
+
+Since local host dont work, im changing the url to postgres
+
+spring.datasource.url=jdbc:postgresql://postgres:5432/job
+
+
+service registry -
+eureka.client.serviceUrl.defaultZone=http://servicereg:8761/eureka/
+
+
+spring.config.import=optional:configserver:http://config-server:8892
+
+
+ADD THIS TO ZIPKIN
+------------------
+
+management.zipkin.tracing.endpoint=http://zipkin:9411/v2/spans
+
+
+job-service.url=http://job:8898
+company-service.url=http://company:8897
+review-service.url=http://review:8896
+
+in company microservice, these url are accessed by the feign clients\
+
+job-service.url=http://job:8898
+company-service.url=http://company:8897
+review-service.url=http://review:8896
+
+
+
+Create Docker for all the parts of the project separately
+----------------------------------------------------------
+
+Service registry
+
+mvnw spring-boot:build-image "-Dspring-boot.build-image.imageName=username/servicereg"
+
+
+docker push username/servicereg
+
+creating he image and pushing it to the hub
+
+Company container
+mvnw spring-boot:build-image "-Dspring-boot.build-image.imageName=username/companyms"
+
+do for 
+
+JOB 
+REVIEWS
+GATEWAY
+CONFIG SERVER
+
+
+PUSH THEM ALL TO THE DOCKER REGISTRY 
+
