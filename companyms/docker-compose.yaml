@@ -43,8 +43,87 @@ services:
       - "15672:15672"
     networks:
       - postgres
+  gateway:
+    image: sahi3003/gateway:latest             # Your Docker image
+    container_name: gateway                    # Container name
+    ports:
+      - "8891:8891"                            # Host:Container port mapping
+    depends_on:
+      - servicereg                             # Waits for service registry to be up
+    networks:
+      - microservice-network                   # Custom Docker network
+      - postgres                               # Only needed if it talks to the DB
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker          # Spring Boot profile to activate
+  reviewms:
+    image: sahi3003/reviewms:latest              # Docker image for review microservice
+    container_name: reviewms                     # Name of the container
+    ports:
+      - "8896:8896"                              # Maps host:container port
+    depends_on:
+      - servicereg                               # Ensures service registry starts first
+      - config-server                            # Ensures config server is available
+    networks:
+      - microservice-network                     # Microservice communication network
+      - postgres                                  # Only needed if this service accesses a DB
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker            # Activates the Docker profile
+  jobms:
+    image: sahi3003/jobms:latest                  # Docker image for the job microservice
+    container_name: jobms                         # Name of the container
+    ports:
+      - "8898:8898"                               # Maps host port 8898 to container port 8898
+    depends_on:
+      - servicereg                                # Wait for Eureka server
+      - config-server                             # Wait for config server
+    networks:
+      - microservice-network                      # Custom network for inter-service communication
+      - postgres                                   # Required only if the service connects to the DB
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker             # Activates the docker profile
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://servicereg:8761/eureka  # Points to service registry
+  companyms:
+    image: sahi3003/companyms:latest               # Docker image for the Company microservice
+    container_name: companyms                      # Name of the container
+    ports:
+      - "8897:8897"                                # Maps host:container port
+    depends_on:
+      - servicereg                                 # Service Registry (Eureka)
+      - config-server                              # Centralized config server
+    networks:
+      - microservice-network                       # Inter-service communication network
+      - postgres                                    # Only if using a database
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker              # Activates the Spring 'docker' profile
+  servicereg:
+    image: sahi3003/servicereg:latest         # Docker image for the Eureka server
+    container_name: servicereg                # Name of the container
+    ports:
+      - "8761:8761"                           # Maps host port 8761 to container
+    depends_on:
+      - rabbitmq                              # Ensures RabbitMQ starts before
+      - zipkin                                # Tracing system
+      - postgres                              # Only needed if this service logs to DB
+      - pgadmin                               # UI tool (optional)
+    networks:
+      - microservice-network                  # Logical service-to-service communication
+      - postgres                              # Only if connecting to DB
+  config-server:
+    image: sahi3003/config-server:latest              # Docker image for Spring Cloud Config Server
+    container_name: config-server-ms                  # Container name
+    ports:
+      - "8892:8892"                                    # Host:Container port mapping
+    depends_on:
+      - servicereg                                     # Starts after Eureka Service Registry
+    networks:
+      - microservice-network                           # Inter-service communication
+      - postgres                                        # Needed only if using DB-backed config
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker                  # Activates the 'docker' profile
 
 networks:
+  microservice-network:
+    driver: bridge
   postgres:
     driver: bridge
  
